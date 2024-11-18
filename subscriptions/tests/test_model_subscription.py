@@ -15,6 +15,9 @@ class SubscriptionModelTest(TestCase):
 
     def test_create(self):
         self.assertTrue(Subscription.objects.exists())
-        
+
     def test_created_at(self):
         self.assertIsInstance(self.obj.created_at, datetime)
+
+    def test_str(self):
+        self.assertEqual('Cleber Fonseca', str(self.obj))
