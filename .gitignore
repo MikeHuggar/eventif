@@ -1,5 +1,7 @@
 .eventif
+.python-version
 *.sqlite3
 __pycache__
 .env
 staticfiles
+.ipynb_checkpoints/
