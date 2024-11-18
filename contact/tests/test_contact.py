@@ -1,0 +1,40 @@
+from django.test import TestCase
+from django.core import mail
+from contact.forms import ContactForm
+
+class ContactFormTest(TestCase):
+    def setUp(self):
+        self.form = ContactForm()
+
+    def test_has_form(self):
+        expected = ['name', 'email', 'phone', 'message']
+        self.assertSequenceEqual(expected, list(self.form.fields))
+
+class ContactPostValid(TestCase):
+    def setUp(self):
+        data = dict(name="Rogério Freitas Mateus", email="rogerio@gmail.com", phone="53-12345-6789", message="Quero contatá-los")
+        self.client.post('/contato/', data)
+        self.email = mail.outbox[0]
+
+    def test_subscription_email_subject(self):
+        expect = 'Mensagem enviada!'
+        self.assertEqual(expect, self.email.subject)
+
+    def test_subscription_email_from(self):
+        expect = 'rogerio@gmail.com'
+        self.assertEqual(expect, self.email.from_email)
+
+    def test_subscription_email_to(self):
+        expect = ['rogerio@gmail.com', 'contato@eventif.com.br']
+        self.assertEqual(expect, self.email.to)
+
+    def test_subscription_email_body(self):
+        contents = (
+            'Rogério Freitas Mateus',
+            'rogerio@gmail.com',
+            '53-12345-6789',
+            'Quero contatá-los'
+        )
+        for content in contents:
+            with self.subTest():
+                self.assertIn(content, self.email.body)
