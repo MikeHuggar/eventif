@@ -16,19 +16,19 @@ class ContactPostValid(TestCase):
         self.client.post('/contato/', data)
         self.email = mail.outbox[0]
 
-    def test_subscription_email_subject(self):
+    def test_contact_email_subject(self):
         expect = 'Mensagem enviada!'
         self.assertEqual(expect, self.email.subject)
 
-    def test_subscription_email_from(self):
+    def test_contact_email_from(self):
         expect = 'rogerio@gmail.com'
         self.assertEqual(expect, self.email.from_email)
 
-    def test_subscription_email_to(self):
+    def test_contact_email_to(self):
         expect = ['rogerio@gmail.com', 'contato@eventif.com.br']
         self.assertEqual(expect, self.email.to)
 
-    def test_subscription_email_body(self):
+    def test_contact_email_body(self):
         contents = (
             'Rogério Freitas Mateus',
             'rogerio@gmail.com',
@@ -64,19 +64,19 @@ class ContactEmailSent(TestCase):
         self.client.post('/contato/', data)
         self.email = mail.outbox[0]
 
-    def test_subscription_email_subject(self):
+    def test_contact_email_subject(self):
         expect = 'Mensagem enviada!'
         self.assertEqual(expect, self.email.subject)
 
-    def test_subscription_email_from(self):
+    def test_contact_email_from(self):
         expect = 'huggar@gmail.com'
         self.assertEqual(expect, self.email.from_email)
 
-    def test_subscription_email_to(self):
+    def test_contact_email_to(self):
         expect = ['huggar@gmail.com','contato@eventif.com.br']
         self.assertEqual(expect, self.email.to)
 
-    def test_subscription_email_body(self):
+    def test_contact_email_body(self):
         contents = (
             'Mike Huggar',
             'huggar@gmail.com',
