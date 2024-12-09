@@ -4,10 +4,7 @@ from core.models import Speaker
 # Create your views here.
 
 def home(request):
-    speakers = [
-        {'name': 'Grace Hopper', 'photo': 'https://abre.ai/hopper-pic'},
-        {'name': 'Alan Turing', 'photo': 'https://abre.ai/turing-pic'}
-    ]
+    speakers = Speaker.objects.all()
     return render(request, 'index.html', {'speakers': speakers})
 def speaker_detail(request, slug):
     speaker = get_object_or_404(Speaker, slug=slug)
