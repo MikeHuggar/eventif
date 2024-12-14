@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.core import mail
+from datetime import datetime
 from contact.forms import ContactForm
+from contact.models import Contact
 
 class ContactFormTest(TestCase):
     def setUp(self):
@@ -85,4 +87,26 @@ class ContactEmailSent(TestCase):
         )
         for content in contents:
             with self.subTest():
-                self.assertIn(content, self.email.body)        
+                self.assertIn(content, self.email.body)
+
+class ContactModelTest(TestCase):
+    def setUp(self):
+        self.obj = Contact(
+            name='Mike Huggar',
+            email='huggar@gmail.com',
+            phone='53-12345-6789',
+            message='whens mvc4'
+        )
+        self.obj.save()
+    
+    def test_create(self):
+        self.assertTrue(Contact.objects.exists())
+    
+    def test_created_at(self):
+        self.assertIsInstance(self.obj.created_at, datetime)
+    
+    def test_str(self):
+        self.assertEqual('Mike Huggar', str(self.obj))
+
+    def test_replied_default_False(self):
+        self.assertEqual(False, self.obj.is_replied)

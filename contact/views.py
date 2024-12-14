@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from contact.forms import ContactForm
+from contact.models import Contact
 from django.template.loader import render_to_string
 from django.core import mail
 from django.conf import settings
@@ -16,6 +17,8 @@ def create(request):
 
     if not form.is_valid():
         return render(request, 'contact/contact_form.html', {'form': form})
+    
+    Contact.objects.create(**form.cleaned_data)
 
     _send_mail(
         'contact/contact_email.txt',
@@ -31,4 +34,4 @@ def new(request):
 
 def _send_mail(template_name, context, subject, from_, to):
     body = render_to_string(template_name, context)
-    email = mail.send_mail(subject, body, from_, [from_, to])    
+    email = mail.send_mail(subject, body, from_, [from_, to])
